@@ -20,21 +20,24 @@ byte name_B = 0;
 
 
 void connectionCheck();
-void roleSwitch(char branch);
+//void roleSwitch(char branch);
 
 void setup() {
   Serial.begin(9600);
   mySerialA.begin(9600);
   mySerialB.begin(9600);
-
+  delay(1000); // Ждем пока все включатся
 }
 
 void loop() {
+  connectionCheck();
   if (Serial.available()){
     while (Serial.available()) Serial.read();
     connectionCheck();
-    Serial.println(name_A);
-    Serial.println(name_B);
+    //Serial.println(name_A);
+    //Serial.println(name_B);
+    name_A = 0;
+    name_B = 0;
     //roleSwitch();
     /*if (branch_A)
       roleSwitch("A");
@@ -50,33 +53,42 @@ void loop() {
 void connectionCheck()
 {
   mySerialA.listen();
+  delay(1);
   mySerialA.write(ARE_YOU_HERE);
-  delay(50);
+  mySerialA.write(MY_NAME);
+  //delay(10);
+  //while(name_A == 0){
   if (mySerialA.available() > 0)
   {
     name_A = mySerialA.read();
+    Serial.print(name_A);
     Serial.println(mySerialA.read());
-    if(name_A > 60 && name_A  < 80) 
+    /*if(name_A > 60 && name_A  < 80) 
       branch_A = true;
     else 
-      name_A = 0;
+      name_A = 0;//*/
   }
-  mySerialB.listen();
+  //delay(10);
+  //}
+ /* mySerialB.listen();
+  delay(2);
   mySerialB.write(ARE_YOU_HERE);
   delay(50);
+  //mySerialB.write(MY_NAME);
+  //delay(50);
   if (mySerialB.available() > 0)
   {
-    name_B = mySerialB.read();
+    //name_B = mySerialB.read();
     Serial.println(mySerialB.read());
-    if(name_B > 60 && name_B  < 80) 
+    /*if(name_B > 60 && name_B  < 80) 
       branch_B = true;
     else 
-      name_B = 0;
-  }
+      name_B = 0;*/
+  //}
 }
 
 
-void roleSwitch()
+/*void roleSwitch()
 {
   if(branch_A)
   {
@@ -90,4 +102,4 @@ void roleSwitch()
     mySerialB.write(CONNECTED);
     delay(50);
   }
-}
+}//*/
