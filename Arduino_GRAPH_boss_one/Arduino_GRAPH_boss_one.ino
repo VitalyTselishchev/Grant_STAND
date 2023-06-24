@@ -8,7 +8,6 @@
 #define ARE_YOU_HERE 255
 #define CONNECTED 253
 
-
 SoftwareSerial mySerialA(RXa,TXa);
 SoftwareSerial mySerialB(RXb,TXb);
 
@@ -34,17 +33,8 @@ void loop() {
   if (Serial.available()){
     while (Serial.available()) Serial.read();
     connectionCheck();
-    //Serial.println(name_A);
-    //Serial.println(name_B);
     name_A = 0;
     name_B = 0;
-    //roleSwitch();
-    /*if (branch_A)
-      roleSwitch("A");
-    delay(100);
-    if (branch_B)
-      roleSwitch("B");//*/
-  
   }
 
 }
@@ -57,34 +47,28 @@ void connectionCheck()
   mySerialA.write(ARE_YOU_HERE);
   mySerialA.write(MY_NAME);
   delay(10);
-  //while(name_A == 0){
-  if (mySerialA.available() > 0)
+  if (mySerialA.available())
   {
     name_A = mySerialA.read();
+    int m = mySerialA.read();
     Serial.print(name_A);
-    Serial.println(mySerialA.read());
-    /*if(name_A > 60 && name_A  < 80) 
-      branch_A = true;
-    else 
-      name_A = 0;//*/
+    Serial.println(m);
   }
   //delay(10);
   //}
- /* mySerialB.listen();
-  delay(2);
+  mySerialB.listen();
+  delay(1);
   mySerialB.write(ARE_YOU_HERE);
-  delay(50);
+  mySerialB.write(MY_NAME);
+  delay(10);
   //mySerialB.write(MY_NAME);
   //delay(50);
-  if (mySerialB.available() > 0)
+  if (mySerialB.available())
   {
-    //name_B = mySerialB.read();
+    name_B = mySerialB.read();
+    Serial.print(name_B);
     Serial.println(mySerialB.read());
-    /*if(name_B > 60 && name_B  < 80) 
-      branch_B = true;
-    else 
-      name_B = 0;*/
-  //}
+  }
 }
 
 
